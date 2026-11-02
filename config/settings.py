@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "catalog",
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -135,3 +136,5 @@ MAILERS = {
         "BACKEND": "django.core.mail.backends.console.EmailBackend",
     },
 }
+
+CORS_ALLOW_ALL_ORIGINS = True
