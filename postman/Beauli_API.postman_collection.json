@@ -1,0 +1,757 @@
+{
+  "info": {
+    "_postman_id": "b3a1c2d4-5e6f-4a7b-8c9d-0e1f2a3b4c5d",
+    "name": "Beauli API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Brands",
+      "item": [
+        {
+          "name": "Список брендів",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/brands",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "brands"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/brands",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "brands"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": 1,\n    \"name\": \"MAC\",\n    \"description\": \"Професійна косметика для макіяжу.\"\n  },\n  {\n    \"id\": 2,\n    \"name\": \"Empty Brand\",\n    \"description\": \"Бренд без товарів.\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Створення бренду",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/brands",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "brands"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Maybelline\",\n  \"description\": \"Доступна декоративна косметика.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/brands",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "brands"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Maybelline\",\n  \"description\": \"Доступна декоративна косметика.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"id\": 3,\n  \"name\": \"Maybelline\",\n  \"description\": \"Доступна декоративна косметика.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Деталі бренду",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/brands/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "brands",
+                "1"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/brands/1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "brands",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"id\": 1,\n  \"name\": \"MAC\",\n  \"description\": \"Професійна косметика для макіяжу.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Неіснуючий бренд",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/brands/999",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "brands",
+                "999"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "404 Not Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/brands/999",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "brands",
+                    "999"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"Brand not found\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Оновлення бренду",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/brands/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "brands",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"MAC Cosmetics\",\n  \"description\": \"Професійна косметика для макіяжу.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/brands/1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "brands",
+                    "1"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"MAC Cosmetics\",\n  \"description\": \"Професійна косметика для макіяжу.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"id\": 1,\n  \"name\": \"MAC Cosmetics\",\n  \"description\": \"Професійна косметика для макіяжу.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Видалення бренду з прив'язаними товарами",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/brands/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "brands",
+                "1"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "409 Conflict",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/brands/1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "brands",
+                    "1"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"Cannot delete brand with associated products\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Видалення порожнього бренду",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/brands/2",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "brands",
+                "2"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "204 No Content",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/brands/2",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "brands",
+                    "2"
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Дерево категорій",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/categories",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/categories",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "categories"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": 10,\n    \"name\": \"Губи\",\n    \"subcategories\": [\n      {\n        \"id\": 11,\n        \"name\": \"Помади та блиски\"\n      }\n    ]\n  },\n  {\n    \"id\": 20,\n    \"name\": \"Очі\",\n    \"subcategories\": [\n      {\n        \"id\": 21,\n        \"name\": \"Туш\"\n      }\n    ]\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Створення категорії",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/categories",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Обличчя\",\n  \"parent_id\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/categories",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "categories"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Обличчя\",\n  \"parent_id\": null\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"id\": 30,\n  \"name\": \"Обличчя\",\n  \"subcategories\": []\n}"
+            }
+          ]
+        },
+        {
+          "name": "Видалення категорії з підкатегоріями/товарами",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/categories/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories",
+                "1"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "409 Conflict",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/categories/1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "categories",
+                    "1"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"detail\": \"Cannot delete category with subcategories or products\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Список товарів з фільтрами",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products?brand_id=1&color=red",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "brand_id",
+                  "value": "1"
+                },
+                {
+                  "key": "color",
+                  "value": "red"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/products?brand_id=1&color=red",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "products"
+                  ],
+                  "query": [
+                    {
+                      "key": "brand_id",
+                      "value": "1"
+                    },
+                    {
+                      "key": "color",
+                      "value": "red"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"total\": 45,\n  \"items\": [\n    {\n      \"id\": 101,\n      \"name\": \"Matte Lipstick\",\n      \"price\": 450.0,\n      \"brand\": \"MAC\",\n      \"image_url\": \"/img/mac_red.jpg\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Створення товару",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"MAC-001\",\n  \"name\": \"Matte Lipstick\",\n  \"description\": \"Стійка червона помада...\",\n  \"price\": 450.0,\n  \"brand_id\": 1,\n  \"category_id\": 11,\n  \"available_colors\": [\n    \"red\",\n    \"pink\",\n    \"nude\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/products",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "products"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sku\": \"MAC-001\",\n  \"name\": \"Matte Lipstick\",\n  \"description\": \"Стійка червона помада...\",\n  \"price\": 450.0,\n  \"brand_id\": 1,\n  \"category_id\": 11,\n  \"available_colors\": [\n    \"red\",\n    \"pink\",\n    \"nude\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"id\": 101,\n  \"sku\": \"MAC-001\",\n  \"name\": \"Matte Lipstick\",\n  \"description\": \"Стійка червона помада...\",\n  \"price\": 450.0,\n  \"brand\": {\n    \"id\": 5,\n    \"name\": \"MAC\"\n  },\n  \"available_colors\": [\n    \"red\",\n    \"pink\",\n    \"nude\"\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Створення товару (невалідні дані)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"\",\n  \"name\": \"\",\n  \"price\": -10,\n  \"brand_id\": \"abc\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/products",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "products"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sku\": \"\",\n  \"name\": \"\",\n  \"price\": -10,\n  \"brand_id\": \"abc\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"detail\": [\n    {\n      \"field\": \"sku\",\n      \"message\": \"SKU must not be empty\"\n    },\n    {\n      \"field\": \"name\",\n      \"message\": \"Name must not be empty\"\n    },\n    {\n      \"field\": \"price\",\n      \"message\": \"Price must be greater than 0\"\n    },\n    {\n      \"field\": \"brand_id\",\n      \"message\": \"brand_id must be an integer\"\n    },\n    {\n      \"field\": \"category_id\",\n      \"message\": \"Field is required\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Деталі товару",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "1"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/products/1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "products",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"id\": 101,\n  \"sku\": \"MAC-001\",\n  \"name\": \"Matte Lipstick\",\n  \"description\": \"Стійка червона помада...\",\n  \"price\": 450.0,\n  \"brand\": {\n    \"id\": 5,\n    \"name\": \"MAC\"\n  },\n  \"available_colors\": [\n    \"red\",\n    \"pink\",\n    \"nude\"\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Видалення товару",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "1"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "204 No Content",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/products/1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "products",
+                    "1"
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000/api/v1",
+      "type": "string"
+    }
+  ]
+}
