@@ -248,6 +248,198 @@ Requires the latest patch release of Python 3.12, 3.13, or 3.14. Run these comma
    python manage.py runserver
    ```
 
+## Автентифікація та авторизація (JWT)
+
+Автентифікація працює через JWT (`djangorestframework-simplejwt`).
+Після логіну клієнт отримує два токени:
+
+| Токен   | Термін дії | Призначення |
+|---------|------------|-------------|
+| access  | 30 хвилин  | передається в кожному запиті до захищених ендпоінтів |
+| refresh | 1 день     | використовується лише для отримання нового access токена |
+
+### Як передавати токен
+
+Для захищених дій токен передається в хедері `Authorization`:
+
+```
+Authorization: Bearer <access_token>
+```
+
+### Реєстрація
+
+* **Метод:** `POST`
+* **Ендпоінт:** `/api/v1/auth/register`
+* **Хедери:** `Content-Type: application/json`
+* **Доступ:** публічний
+
+**Request body:**
+
+| Поле                  | Обов'язкове | Обмеження                                              |
+|-----------------------|-------------|--------------------------------------------------------|
+| `username`            | так         | до 150 символів, унікальне                             |
+| `first_name`          | ні          | до 150 символів, можна не передавати або залишити порожнім |
+| `last_name`           | ні          | до 150 символів, можна не передавати або залишити порожнім |
+| `email`               | так         | коректний формат, до 254 символів, унікальний          |
+| `password`            | так         | від 8 до 128 символів, перевірка складності пароля     |
+| `password_confirmation` | так       | від 8 до 128 символів, має збігатися з `password`      |
+
+```json
+{
+  "username": "anna_beauli",
+  "first_name": "Anna",
+  "last_name": "Koval",
+  "email": "anna@example.com",
+  "password": "StrongPass123!",
+  "password_confirmation": "StrongPass123!"
+}
+```
+
+**Успішна відповідь — `201 Created`:**
+
+```json
+{
+  "message": "Користувача успішно зареєстровано.",
+  "user": {
+    "id": 1,
+    "username": "anna_beauli",
+    "email": "anna@example.com"
+  }
+}
+```
+
+**Помилка валідації — `400 Bad Request`** (для кожного невалідного поля повертається окреме повідомлення):
+
+```json
+{
+  "username": ["This field may not be blank."],
+  "email": ["Enter a valid email address."],
+  "password": ["Ensure this field has at least 8 characters."],
+  "password_confirmation": ["Паролі не збігаються."]
+}
+```
+
+Пароль зберігається в базі лише в захешованому вигляді.
+
+### Логін
+
+* **Метод:** `POST`
+* **Ендпоінт:** `/api/v1/auth/login`
+* **Хедери:** `Content-Type: application/json`
+* **Доступ:** публічний
+
+**Request body:**
+
+```json
+{
+  "username": "anna_beauli",
+  "password": "StrongPass123!"
+}
+```
+
+**Успішна відповідь — `200 OK`:**
+
+```json
+{
+  "refresh": "<refresh_token>",
+  "access": "<access_token>"
+}
+```
+
+**Неправильні дані — `401 Unauthorized`:**
+
+```json
+{
+  "detail": "No active account found with the given credentials"
+}
+```
+
+### Оновлення access токена
+
+Access токен діє 30 хвилин. Коли він спливає, захищений ендпоінт повертає `401`.
+У цей момент клієнт відправляє refresh токен і отримує новий access токен,
+після чого повторює початковий запит. Повторний логін потрібен лише тоді,
+коли спливає і refresh токен (через 1 день).
+
+* **Метод:** `POST`
+* **Ендпоінт:** `/api/v1/auth/token/refresh`
+* **Хедери:** `Content-Type: application/json`
+* **Доступ:** публічний
+
+**Request body:**
+
+```json
+{
+  "refresh": "<refresh_token>"
+}
+```
+
+**Успішна відповідь — `200 OK`:**
+
+```json
+{
+  "access": "<new_access_token>"
+}
+```
+
+**Недійсний або прострочений refresh токен — `401 Unauthorized`:**
+
+```json
+{
+  "detail": "Token is invalid or expired",
+  "code": "token_not_valid"
+}
+```
+
+### Logout
+
+Окремого ендпоінта для виходу немає. Під час виходу клієнт видаляє збережені
+`access` та `refresh` токени (наприклад, із `localStorage`), після чого
+захищені запити більше не авторизуються.
+
+### Права доступу (Permissions)
+
+| Метод                  | Доступ                        |
+|------------------------|-------------------------------|
+| `GET`                  | усі, токен не потрібен        |
+| `POST`, `PUT`, `DELETE`| лише авторизовані користувачі |
+
+Це стосується всіх ендпоінтів `/api/v1/brands`, `/api/v1/categories` та `/api/v1/products`.
+
+Якщо неавторизований користувач виконує `POST`, `PUT` чи `DELETE`, API повертає `401 Unauthorized`:
+
+* токен не передано:
+
+  ```json
+  {
+    "detail": "Authentication credentials were not provided."
+  }
+  ```
+
+* токен недійсний або прострочений:
+
+  ```json
+  {
+    "detail": "Given token not valid for any token type",
+    "code": "token_not_valid",
+    "messages": [
+      {
+        "token_class": "AccessToken",
+        "token_type": "access",
+        "message": "Token is invalid or expired"
+      }
+    ]
+  }
+  ```
+
+**Приклад запиту із токеном:**
+
+```
+POST /api/v1/products
+Authorization: Bearer <access_token>
+Content-Type: application/json
+```
+
 ## Endpoints
 
 With the server running at `http://127.0.0.1:8000`:

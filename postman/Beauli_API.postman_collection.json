@@ -745,6 +745,134 @@
           ]
         }
       ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Реєстрація",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/auth/register", "host": ["{{base_url}}"], "path": ["auth", "register"] },
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"anna_beauli\",\n  \"first_name\": \"Anna\",\n  \"last_name\": \"Koval\",\n  \"email\": \"anna@example.com\",\n  \"password\": \"StrongPass123!\",\n  \"password_confirmation\": \"StrongPass123!\"\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": { "raw": "{{base_url}}/auth/register", "host": ["{{base_url}}"], "path": ["auth", "register"] },
+                "body": { "mode": "raw", "raw": "{\n  \"username\": \"anna_beauli\",\n  \"first_name\": \"Anna\",\n  \"last_name\": \"Koval\",\n  \"email\": \"anna@example.com\",\n  \"password\": \"StrongPass123!\",\n  \"password_confirmation\": \"StrongPass123!\"\n}", "options": { "raw": { "language": "json" } } }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"message\": \"Користувача успішно зареєстровано.\",\n  \"user\": {\n    \"id\": 1,\n    \"username\": \"anna_beauli\",\n    \"email\": \"anna@example.com\"\n  }\n}"
+            },
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": { "raw": "{{base_url}}/auth/register", "host": ["{{base_url}}"], "path": ["auth", "register"] },
+                "body": { "mode": "raw", "raw": "{\n  \"username\": \"\",\n  \"email\": \"not-an-email\",\n  \"password\": \"123\",\n  \"password_confirmation\": \"456\"\n}", "options": { "raw": { "language": "json" } } }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"username\": [\n    \"This field may not be blank.\"\n  ],\n  \"email\": [\n    \"Enter a valid email address.\"\n  ],\n  \"password\": [\n    \"Ensure this field has at least 8 characters.\"\n  ],\n  \"password_confirmation\": [\n    \"Ensure this field has at least 8 characters.\"\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Логін",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] },
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"anna_beauli\",\n  \"password\": \"StrongPass123!\"\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] },
+                "body": { "mode": "raw", "raw": "{\n  \"username\": \"anna_beauli\",\n  \"password\": \"StrongPass123!\"\n}", "options": { "raw": { "language": "json" } } }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.refresh_token_example\",\n  \"access\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.access_token_example\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Оновлення access токена",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/auth/token/refresh", "host": ["{{base_url}}"], "path": ["auth", "token", "refresh"] },
+            "body": { "mode": "raw", "raw": "{\n  \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.refresh_token_example\"\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": { "raw": "{{base_url}}/auth/token/refresh", "host": ["{{base_url}}"], "path": ["auth", "token", "refresh"] },
+                "body": { "mode": "raw", "raw": "{\n  \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.refresh_token_example\"\n}", "options": { "raw": { "language": "json" } } }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n  \"access\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.new_access_token_example\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Створення товару з неправильним токеном",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer invalid_token" }
+        ],
+        "url": { "raw": "{{base_url}}/products", "host": ["{{base_url}}"], "path": ["products"] },
+        "body": { "mode": "raw", "raw": "{\n  \"sku\": \"MAC-001\",\n  \"name\": \"Matte Lipstick\",\n  \"description\": \"Стійка червона помада...\",\n  \"price\": 450.0,\n  \"brand_id\": 1,\n  \"category_id\": 11,\n  \"available_colors\": [\"red\", \"pink\", \"nude\"]\n}", "options": { "raw": { "language": "json" } } }
+      },
+      "response": [
+        {
+          "name": "401 Unauthorized",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer invalid_token" }
+            ],
+            "url": { "raw": "{{base_url}}/products", "host": ["{{base_url}}"], "path": ["products"] },
+            "body": { "mode": "raw", "raw": "{\n  \"sku\": \"MAC-001\",\n  \"name\": \"Matte Lipstick\",\n  \"description\": \"Стійка червона помада...\",\n  \"price\": 450.0,\n  \"brand_id\": 1,\n  \"category_id\": 11,\n  \"available_colors\": [\"red\", \"pink\", \"nude\"]\n}", "options": { "raw": { "language": "json" } } }
+          },
+          "status": "Unauthorized",
+          "code": 401,
+          "_postman_previewlanguage": "json",
+          "header": [],
+          "cookie": [],
+          "body": "{\n  \"detail\": \"Given token not valid for any token type\",\n  \"code\": \"token_not_valid\",\n  \"messages\": [\n    {\n      \"token_class\": \"AccessToken\",\n      \"token_type\": \"access\",\n      \"message\": \"Token is invalid or expired\"\n    }\n  ]\n}"
+        }
+      ]
     }
   ],
   "variable": [
