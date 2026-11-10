@@ -19,9 +19,9 @@ class RegisterView(APIView):
                     "user": {
                         "id": user.id,
                         "username": user.username,
-                        "email": user.email
-                    }
+                        "email": user.email,
+                    },
                 },
-                status=status.HTTP_201_CREATED
+                status=status.HTTP_201_CREATED,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
