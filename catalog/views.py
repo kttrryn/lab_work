@@ -12,9 +12,11 @@ from .serializers import (
     ProductListSerializer,
 )
 from .utils import error_response
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 
 class BrandListCreateView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get(self, request):
         brands = Brand.objects.all()
         serializer = BrandSerializer(brands, many=True)
@@ -29,6 +31,7 @@ class BrandListCreateView(APIView):
 
 
 class BrandDetailView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get_object(self, pk):
         try:
             return Brand.objects.get(pk=pk)
@@ -69,6 +72,7 @@ class BrandDetailView(APIView):
 
 
 class CategoryListCreateView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get(self, request):
         # кореневі категорії та підкатегорії
         root_categories = Category.objects.filter(parent=None).prefetch_related(
@@ -86,6 +90,7 @@ class CategoryListCreateView(APIView):
 
 
 class CategoryDetailView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get_object(self, pk):
         try:
             return Category.objects.get(pk=pk)
@@ -132,8 +137,8 @@ class CategoryDetailView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-# ================= PRODUCTS =================
 class ProductListCreateView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get(self, request):
         queryset = Product.objects.select_related("brand").all()
 
@@ -169,6 +174,7 @@ class ProductListCreateView(APIView):
 
 
 class ProductDetailView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get_object(self, pk):
         try:
             return (
