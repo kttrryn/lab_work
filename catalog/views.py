@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from catalog.permissions import IsAdminOrReadOnly
 
 from .models import Brand, Category, Product
 from .serializers import (
@@ -142,7 +143,7 @@ class CategoryDetailView(APIView):
 
 
 class ProductListCreateView(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
 
     def get(self, request):
         queryset = Product.objects.select_related("brand").all()
