@@ -17,7 +17,7 @@ from .utils import error_response
 
 
 class BrandListCreateView(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
 
     def get(self, request):
         brands = Brand.objects.all()
@@ -33,7 +33,7 @@ class BrandListCreateView(APIView):
 
 
 class BrandDetailView(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
 
     def get_object(self, pk):
         try:
@@ -75,7 +75,7 @@ class BrandDetailView(APIView):
 
 
 class CategoryListCreateView(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
 
     def get(self, request):
         # кореневі категорії та підкатегорії
@@ -94,7 +94,7 @@ class CategoryListCreateView(APIView):
 
 
 class CategoryDetailView(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
 
     def get_object(self, pk):
         try:
@@ -180,7 +180,7 @@ class ProductListCreateView(APIView):
 
 
 class ProductDetailView(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
 
     def get_object(self, pk):
         try:
