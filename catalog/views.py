@@ -1,3 +1,4 @@
+import logging
 from django.db.models import Q
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -15,6 +16,8 @@ from .serializers import (
 )
 from .utils import error_response
 
+logger = logging.getLogger('catalog')
+
 
 class BrandListCreateView(APIView):
     permission_classes = [IsAdminOrReadOnly]
@@ -27,8 +30,14 @@ class BrandListCreateView(APIView):
     def post(self, request):
         serializer = BrandSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            brand = serializer.save()
+            logger.info("Користувач %s створив бренд id=%s", request.user.username, brand.id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        logger.warning(
+            "Невдала спроба створення бренду користувачем %s: %s",
+            request.user.username,
+            serializer.errors,
+        )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -44,6 +53,7 @@ class BrandDetailView(APIView):
     def get(self, request, pk):
         brand = self.get_object(pk)
         if not brand:
+            logger.warning("Запит до неіснуючого бренду id=%s", pk)
             return error_response("Brand not found", status.HTTP_404_NOT_FOUND)
         serializer = BrandSerializer(brand)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -51,26 +61,37 @@ class BrandDetailView(APIView):
     def put(self, request, pk):
         brand = self.get_object(pk)
         if not brand:
+            logger.warning("Спроба оновити неіснуючий бренд id=%s", pk)
             return error_response("Brand not found", status.HTTP_404_NOT_FOUND)
         serializer = BrandSerializer(brand, data=request.data)
         if serializer.is_valid():
             serializer.save()
+            logger.info("Користувач %s оновив бренд id=%s", request.user.username, pk)
             return Response(serializer.data, status=status.HTTP_200_OK)
+        logger.warning("Помилка валідації при оновленні бренду id=%s: %s", pk, serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         brand = self.get_object(pk)
         if not brand:
+            logger.warning("Спроба видалити неіснуючий бренд id=%s", pk)
             return error_response("Brand not found", status.HTTP_404_NOT_FOUND)
 
         count = brand.products.count()
         if count > 0:
+            logger.error(
+                "Конфлікт при видаленні бренду id=%s користувачем %s: закріплено %s товарів",
+                pk,
+                request.user.username,
+                count,
+            )
             return error_response(
                 f"Can't delete the brand as it contains {count} products",
                 status.HTTP_409_CONFLICT,
             )
 
         brand.delete()
+        logger.info("Користувач %s видалив бренд id=%s", request.user.username, pk)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 

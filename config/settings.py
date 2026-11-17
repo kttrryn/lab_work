@@ -142,3 +142,37 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[{asctime}] {levelname} {name}: {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'app.log',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'catalog': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'users': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
