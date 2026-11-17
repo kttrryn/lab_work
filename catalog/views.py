@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from catalog.permissions import IsAdminOrReadOnly
-
+from drf_spectacular.utils import extend_schema
 from .models import Brand, Category, Product
 from .serializers import (
     BrandSerializer,
@@ -22,11 +22,25 @@ logger = logging.getLogger('catalog')
 class BrandListCreateView(APIView):
     permission_classes = [IsAdminOrReadOnly]
 
+    @extend_schema(
+        summary="Список брендів",
+        responses={200: BrandSerializer(many=True)},
+    )
     def get(self, request):
         brands = Brand.objects.all()
         serializer = BrandSerializer(brands, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @extend_schema(
+        summary="Створення нового бренду",
+        request=BrandSerializer,
+        responses={
+            201: BrandSerializer,
+            400: OpenApiResponse(description="Помилка валідації даних"),
+            401: OpenApiResponse(description="Користувач не авторизований"),
+            403: OpenApiResponse(description="Доступ дозволено лише адміністраторам"),
+        },
+    )
     def post(self, request):
         serializer = BrandSerializer(data=request.data)
         if serializer.is_valid():
@@ -50,6 +64,13 @@ class BrandDetailView(APIView):
         except Brand.DoesNotExist:
             return None
 
+    @extend_schema(
+        summary="Деталі бренду",
+        responses={
+            200: BrandSerializer,
+            404: OpenApiResponse(description="Бренд не знайдено"),
+        },
+    )
     def get(self, request, pk):
         brand = self.get_object(pk)
         if not brand:
@@ -58,6 +79,17 @@ class BrandDetailView(APIView):
         serializer = BrandSerializer(brand)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @extend_schema(
+        summary="Оновлення бренду",
+        request=BrandSerializer,
+        responses={
+            200: BrandSerializer,
+            400: OpenApiResponse(description="Помилка валідації даних"),
+            401: OpenApiResponse(description="Користувач не авторизований"),
+            403: OpenApiResponse(description="Доступ дозволено лише адміністраторам"),
+            404: OpenApiResponse(description="Бренд не знайдено"),
+        },
+    )
     def put(self, request, pk):
         brand = self.get_object(pk)
         if not brand:
@@ -71,6 +103,16 @@ class BrandDetailView(APIView):
         logger.warning("Помилка валідації при оновленні бренду id=%s: %s", pk, serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @extend_schema(
+        summary="Видалення бренду",
+        responses={
+            204: OpenApiResponse(description="Бренд успішно видалено"),
+            401: OpenApiResponse(description="Користувач не авторизований"),
+            403: OpenApiResponse(description="Доступ дозволено лише адміністраторам"),
+            404: OpenApiResponse(description="Бренд не знайдено"),
+            409: OpenApiResponse(description="Неможливо видалити бренд із прив'язаними товарами"),
+        },
+    )
     def delete(self, request, pk):
         brand = self.get_object(pk)
         if not brand:

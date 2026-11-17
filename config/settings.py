@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "catalog",
     "users",
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -132,9 +133,16 @@ MAILERS = {
 CORS_ALLOW_ALL_ORIGINS = True
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Beauli Cosmetics API',
+    'DESCRIPTION': 'REST API інтернет-магазину косметики Beauli',
+    'VERSION': '1.0.0',
 }
 
 SIMPLE_JWT = {
