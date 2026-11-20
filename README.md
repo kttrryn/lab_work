@@ -457,6 +457,43 @@ To create an account for admin login, run this after applying migrations:
 python manage.py createsuperuser
 ```
 
+## Налаштування локального середовища та змінних (`.env`)
+
+1. Встановіть усі залежності проєкту (включно з інструментами для тестування та документації):
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Створіть файл .env у кореневій директорії проєкту на основі шаблону .env.example:
+   ```bash
+   cp .env.example .env
+   ```
+3. Заповніть змінні середовища у файлі .env:
+   * SECRET_KEY — секретний ключ Django для криптографічного підпису (обов'язковий).
+   * DEBUG — режим налагодження (True для локальної розробки, False для продакшену).
+   * ALLOWED_HOSTS — список дозволених хостів через кому (наприклад, 127.0.0.1,localhost).
+   
+4. Застосуйте міграції та запустіть локальний сервер:
+   ```bash
+   python manage.py migrate
+   python manage.py runserver
+   ```
+
+## Документація API (OpenAPI / Swagger)
+Swagger UI (інтерактивна документація): http://127.0.0.1:8000/api/docs/
+Завантаження OpenAPI-схеми (YAML/JSON): http://127.0.0.1:8000/api/schema/
+
+## Тестування та покриття коду
+Автоматизовані тести написані з використанням pytest, pytest-django та фікстур (@pytest.fixture) у catalog/conftest.py і catalog/test_brands.py
+1. Запуск усіх тестів:
+    ```bash
+    pytest
+   ```
+2. Замір покриття коду за допомогою coverage.py:
+   ```bash
+   coverage run --source='catalog,users' -m pytest
+   coverage report
+   ```
+
 ## Add your first application
 
 1. Create an app from the directory containing `manage.py` (replace `myapp`

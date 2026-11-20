@@ -40,12 +40,14 @@ def test_update_brand_authenticated(auth_client, brands_data):
     assert response.data['name'] == 'Updated Brand'
 
 
-def test_delete_empty_brand_authenticated(auth_client, brands_data):
+def test_delete_empty_brand_authenticated(auth_client, brands_data, caplog):
     brand = brands_data['empty']
     url = reverse('brand-detail', kwargs={'pk': brand.id})
     response = auth_client.delete(url)
 
     assert response.status_code == status.HTTP_204_NO_CONTENT
+    assert "видалив бренд" in caplog.text
+    assert "StrongPassword123!" not in caplog.text
 
 
 # --- Негативні сценарії ---
@@ -72,12 +74,13 @@ def test_get_non_existent_brand(api_client, db):
     assert response.status_code == status.HTTP_404_NOT_FOUND
 
 
-def test_delete_brand_with_products_conflict(auth_client, brands_data):
+def test_delete_brand_with_products_conflict(auth_client, brands_data, caplog):
     brand = brands_data['with_products']
     url = reverse('brand-detail', kwargs={'pk': brand.id})
     response = auth_client.delete(url)
 
     assert response.status_code == status.HTTP_409_CONFLICT
+    assert "Конфлікт при видаленні бренду" in caplog.text
 
 
 def test_delete_non_existent_brand(auth_client, db):
